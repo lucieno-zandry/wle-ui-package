@@ -1,13 +1,13 @@
 // ============================================================================
-// Hero View (Dumb Presentational Component)
+// Hero View — Redesigned (Dumb Presentational Component)
+// ============================================================================
 
 import { RefObject } from "react";
 import { getEffectivePrice, getOriginalPrice, getPromotionBadge, getVariantLabel } from "../hero";
-import { Button } from "~/components/ui/button";
 import { ChevronDown, ShoppingCart } from "lucide-react";
 import { Variant } from "wle-core";
+import { cn } from "~/lib/utils";
 
-// ============================================================================
 interface HeroProductViewProps {
     backgroundImageUrl: string | null;
     headline: string;
@@ -50,170 +50,162 @@ export function HeroProductView({
         variants[0];
 
     return (
-        <section className="relative min-h-screen w-full flex items-center justify-start overflow-hidden py-20 sm:py-32 bg-black">
-            {/* Background Image with strong darkening overlay */}
+        <section className="relative min-h-[100dvh] w-full flex items-center overflow-hidden bg-stone-100 dark:bg-zinc-950">
+
+            {/* ── Background Image ── */}
             <div className="absolute inset-0 z-0 select-none pointer-events-none" aria-hidden>
                 {backgroundImageUrl ? (
-                    <>
-                        <img
-                            src={backgroundImageUrl}
-                            alt=""
-                            className="w-full h-full object-cover"
-                            style={{ objectPosition: "center 35%" }}
-                        />
-                        {/* Strong gradient overlay to handle very bright images */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/60" />
-                    </>
+                    <img
+                        src={backgroundImageUrl}
+                        alt=""
+                        className="w-full h-full object-cover"
+                        style={{ objectPosition: "center 30%" }}
+                    />
                 ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-gray-900 to-black" />
+                    <div className="w-full h-full bg-gradient-to-br from-stone-300 via-amber-100 to-stone-200 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900" />
                 )}
-                {/* Extra solid overlay for guaranteed contrast */}
-                <div className="absolute inset-0 bg-black/40" />
+
+                {/* Multi-layer overlay system — guarantees text legibility over ANY image */}
+                {/* Layer 1: Heavy left-to-right — the content reading zone */}
+                <div className="absolute inset-0 bg-gradient-to-r from-stone-950/95 via-stone-950/70 to-stone-950/10 dark:from-zinc-950/98 dark:via-zinc-950/75 dark:to-zinc-950/15" />
+                {/* Layer 2: Bottom vignette */}
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-transparent to-transparent dark:from-zinc-950/80" />
+                {/* Layer 3: Subtle top edge */}
+                <div className="absolute inset-0 bg-gradient-to-b from-stone-950/40 via-transparent to-transparent dark:from-zinc-950/50" />
             </div>
 
-            {/* Main container */}
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                <div className="lg:col-span-7 relative max-w-2xl">
-                    {/* Content panel - fully opaque dark background with blur */}
-                    <div className="relative flex flex-col gap-6 text-left bg-[rgba(0,0,0,0.85)] p-6 sm:p-10 rounded-3xl border border-white/20 backdrop-blur-lg shadow-2xl shadow-black/50">
+            {/* ── Main Content ── */}
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-32 sm:py-40">
+                <div className="max-w-xl flex flex-col gap-8">
 
-                        {/* Eyebrow - unchanged, works on dark */}
-                        <p className="inline-flex items-center gap-2.5 text-xs font-bold tracking-[0.2em] uppercase text-amber-400">
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-                            </span>
+                    {/* Eyebrow */}
+                    <div className="inline-flex items-center gap-3 w-fit">
+                        <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+                            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-amber-400" />
+                        </span>
+                        <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-amber-400/85">
                             {eyebrow}
-                        </p>
+                        </span>
+                    </div>
 
-                        {/* Heading */}
-                        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1]">
-                            {headline}{" "}
-                            {headlineSuffix && (
-                                <span className="block mt-1 italic font-light text-amber-200">
-                                    {headlineSuffix}
-                                </span>
-                            )}
+                    {/* Headline */}
+                    <div className="flex flex-col gap-2">
+                        <h1 className="font-display text-5xl sm:text-6xl lg:text-[5.5rem] font-extrabold text-white leading-[0.95] tracking-tight">
+                            {headline}
                         </h1>
-
-                        {/* Subline - now 100% white with shadow for extreme cases */}
-                        <p className="text-base sm:text-lg text-white max-w-xl leading-relaxed font-normal [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
-                            {subline}
-                        </p>
-
-                        {/* Variant selector */}
-                        {variants.length > 1 && (
-                            <div className="flex flex-col gap-2 mt-2">
-                                <span className="text-xs font-semibold uppercase tracking-wider text-white/60">
-                                    Select Option
-                                </span>
-                                <div className="flex flex-wrap gap-2">
-                                    {variants.map((v) => {
-                                        const isActive =
-                                            String(selectedVariantId ?? variants[0]?.id) === String(v.id);
-                                        const badge = getPromotionBadge(v);
-                                        return (
-                                            <button
-                                                key={v.id}
-                                                onClick={() => onSelectVariant(String(v.id))}
-                                                className={`relative px-4 py-2 rounded-xl text-sm transition-all duration-300 transform active:scale-95 ${isActive
-                                                    ? "bg-amber-500 text-black font-bold shadow-lg shadow-amber-500/20 border border-amber-400"
-                                                    : "border border-white/20 bg-white/10 text-white hover:bg-white/20 hover:border-white/40 backdrop-blur-md"
-                                                    }`}
-                                            >
-                                                {getVariantLabel(v)}
-                                                {badge && (
-                                                    <span
-                                                        className={`absolute -top-2.5 -right-2 px-1.5 py-0.5 rounded-md text-[10px] font-bold tracking-wide shadow-md ${isActive
-                                                            ? "bg-black text-amber-400 border border-amber-400/40"
-                                                            : "bg-emerald-600 text-white"
-                                                            }`}
-                                                    >
-                                                        {badge}
-                                                    </span>
-                                                )}
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Price + CTA - using hardcoded colors to resist theme changes */}
-                        <div className="flex flex-wrap items-center gap-6 mt-2 pt-5 border-t border-white/20 sm:flex-nowrap">
-                            <div className="flex flex-col min-w-[120px]">
-                                {selected && (() => {
-                                    const original = getOriginalPrice(selected);
-                                    const current = getEffectivePrice(selected);
-                                    return (
-                                        <>
-                                            {original && (
-                                                <span className="text-sm font-semibold text-white/50 line-through tracking-wide mb-0.5">
-                                                    {formatPrice(original)}
-                                                </span>
-                                            )}
-                                            <span className="font-display text-3xl font-bold text-white tracking-tight">
-                                                {formatPrice(current)}
-                                            </span>
-                                        </>
-                                    );
-                                })()}
-                            </div>
-
-                            <Button
-                                onClick={onAddToCart}
-                                disabled={actionDisabled}
-                                className="w-full sm:w-auto h-12 px-8 text-base font-bold tracking-wide rounded-xl shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-                                style={{
-                                    backgroundColor: "#ffffff",
-                                    color: "#000000",
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.backgroundColor = "#f5f5f5";
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.backgroundColor = "#ffffff";
-                                }}
-                            >
-                                <ShoppingCart className="w-5 h-5 stroke-[2.5]" style={{ stroke: "#000000" }} />
-                                {addToCartLabel}
-                            </Button>
-                        </div>
-
-                        {/* Trust line */}
-                        {trustLine && (
-                            <p className="text-xs text-white/70 font-medium tracking-wide mt-1 flex items-center gap-1.5">
-                                {trustLine}
+                        {headlineSuffix && (
+                            <p className="font-display text-2xl sm:text-3xl font-normal italic text-amber-300/70 mt-2 leading-snug">
+                                {headlineSuffix}
                             </p>
                         )}
                     </div>
+
+                    {/* Subline */}
+                    <p className="text-base sm:text-lg text-white/55 leading-relaxed max-w-md">
+                        {subline}
+                    </p>
+
+                    {/* Variant Selector */}
+                    {variants.length > 1 && (
+                        <div className="flex flex-col gap-3">
+                            <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/35">
+                                Select option
+                            </span>
+                            <div className="flex flex-wrap gap-2.5">
+                                {variants.map((v) => {
+                                    const isActive = String(selectedVariantId ?? variants[0]?.id) === String(v.id);
+                                    const badge = getPromotionBadge(v);
+                                    return (
+                                        <button
+                                            key={v.id}
+                                            onClick={() => onSelectVariant(String(v.id))}
+                                            className={cn(
+                                                "relative px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 border backdrop-blur-sm",
+                                                isActive
+                                                    ? "bg-amber-400 text-stone-950 border-amber-400 shadow-lg shadow-amber-400/30"
+                                                    : "bg-white/8 text-white/70 border-white/15 hover:bg-white/15 hover:border-white/30 hover:text-white"
+                                            )}
+                                        >
+                                            {getVariantLabel(v)}
+                                            {badge && (
+                                                <span className="absolute -top-2.5 -right-2 px-1.5 py-0.5 rounded-md text-[9px] font-extrabold bg-emerald-500 text-white border border-emerald-600 shadow-sm">
+                                                    {badge}
+                                                </span>
+                                            )}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Price + CTA */}
+                    <div className="flex flex-wrap items-center gap-5 pt-5 border-t border-white/10">
+                        {selected && (() => {
+                            const original = getOriginalPrice(selected);
+                            const current = getEffectivePrice(selected);
+                            return (
+                                <div className="flex flex-col leading-none">
+                                    {original && (
+                                        <span className="text-sm text-white/30 line-through mb-1 tracking-wide">
+                                            {formatPrice(original)}
+                                        </span>
+                                    )}
+                                    <span className="font-display text-4xl sm:text-5xl font-bold text-white tracking-tight">
+                                        {formatPrice(current)}
+                                    </span>
+                                </div>
+                            );
+                        })()}
+
+                        <button
+                            onClick={onAddToCart}
+                            disabled={actionDisabled}
+                            className={cn(
+                                "flex items-center gap-3 px-7 py-4 rounded-2xl font-bold text-base tracking-wide",
+                                "bg-amber-400 text-stone-950",
+                                "shadow-2xl shadow-amber-400/25",
+                                "transition-all duration-300",
+                                "hover:bg-amber-300 hover:-translate-y-0.5 hover:shadow-amber-400/40",
+                                "active:translate-y-0 active:scale-[0.97]",
+                                "disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
+                            )}
+                        >
+                            <ShoppingCart className="w-5 h-5 flex-shrink-0" />
+                            {addToCartLabel}
+                        </button>
+                    </div>
+
+                    {/* Trust line */}
+                    {trustLine && (
+                        <p className="flex items-center gap-3 text-xs text-white/30 font-medium tracking-widest uppercase pt-2">
+                            <span className="w-5 h-px bg-white/15 flex-shrink-0" />
+                            {trustLine}
+                        </p>
+                    )}
                 </div>
             </div>
 
-            {/* Scroll anchor & button - theme-proof */}
+            {/* ── Scroll Sentinel ── */}
             <div ref={sentinelRef} className="absolute bottom-0 left-0 w-px h-px pointer-events-none" aria-hidden />
 
-            {onScrollDown && <button
+            {/* ── Scroll Down Button — Bottom Right ── */}
+            <button
                 onClick={onScrollDown}
-                className="absolute bottom-8 right-8 lg:right-12 z-20 w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 group shadow-lg"
-                style={{
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    color: "#ffffff",
-                    animation: "bounce 2.5s infinite",
-                }}
                 aria-label={scrollDownAriaLabel}
+                className="absolute bottom-8 right-8 z-20 flex flex-col items-center gap-2.5 group"
             >
-
-                <ChevronDown className="w-5 h-5 transition-transform duration-300 group-hover:translate-y-0.5" />
-            </button>}
-
-            <style>{`
-        @keyframes bounce {
-          0%, 100% { transform: translateY(0); animation-timing-function: cubic-bezier(0.8,0,1,1); }
-          50% { transform: translateY(-6px); animation-timing-function: cubic-bezier(0,0,0.2,1); }
-        }
-      `}</style>
+                <div className="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center bg-white/5 backdrop-blur-md transition-all duration-300 group-hover:border-amber-400/60 group-hover:bg-amber-400/10">
+                    <ChevronDown
+                        className="w-4.5 h-4.5 text-white/50 transition-all duration-300 group-hover:text-amber-400 group-hover:translate-y-0.5"
+                        strokeWidth={1.5}
+                    />
+                </div>
+                <span className="text-[9px] font-bold tracking-[0.22em] uppercase text-white/25 group-hover:text-white/50 transition-colors duration-300">
+                    Scroll
+                </span>
+            </button>
         </section>
     );
 }

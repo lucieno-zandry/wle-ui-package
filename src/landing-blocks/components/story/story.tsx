@@ -11,7 +11,11 @@ interface StoryViewProps {
 }
 
 /**
- * Story View (Dumb Component)
+ * Story View — Redesigned (Dumb Component)
+ *
+ * Architectural split-screen layout. Image panel left, content right.
+ * Decorative amber divider between panels on desktop.
+ * Theme-agnostic, fully responsive.
  */
 export function StoryView({
   eyebrow,
@@ -25,58 +29,74 @@ export function StoryView({
   const headlineLines = title.split("\n");
 
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-2 min-h-96 lg:min-h-screen bg-amber-50 border-t border-amber-200" id="story">
-      <div className="relative overflow-hidden min-h-80 lg:min-h-full">
-        <div className="absolute inset-0">
-          <img
-            src={imageUrl ?? "/images/placeholder-story.jpg"}
-            alt={imageCaption || defaultImageAlt}
-            className="w-full h-full object-cover object-center"
-            loading="lazy"
-          />
-          {imageCaption && (
-            <p className="absolute bottom-3 left-3 right-3 text-xs text-white/60 text-center tracking-widest">
-              {imageCaption}
-            </p>
-          )}
-        </div>
+    <section
+      id="story"
+      className="grid grid-cols-1 lg:grid-cols-2 bg-white dark:bg-zinc-900 border-t border-stone-100 dark:border-zinc-800"
+    >
+      {/* ── Image Panel ── */}
+      <div className="relative overflow-hidden min-h-72 sm:min-h-96 lg:min-h-[640px]">
+        {/* Image */}
+        <img
+          src={imageUrl ?? "/images/placeholder-story.jpg"}
+          alt={imageCaption || defaultImageAlt}
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          loading="lazy"
+        />
+
+        {/* Overlay: ensures any caption or edge content is readable */}
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-950/50 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-stone-950/10 dark:to-zinc-950/20" />
+
+        {/* Caption */}
+        {imageCaption && (
+          <p className="absolute bottom-4 left-4 right-4 text-[11px] font-medium tracking-widest uppercase text-white/50 text-center">
+            {imageCaption}
+          </p>
+        )}
+
+        {/* Decorative vertical divider — visible only lg+ */}
         <div
-          className="absolute hidden lg:block top-1/4 bottom-1/4 right-0 w-1 rounded-full pointer-events-none"
-          style={{
-            background: "linear-gradient(to bottom, transparent, var(--clr-amber), transparent)",
-            backgroundImage: "linear-gradient(to bottom, transparent, rgb(217, 119, 6), transparent)"
-          }}
+          className="hidden lg:block absolute top-[15%] bottom-[15%] right-0 w-px bg-gradient-to-b from-transparent via-amber-400/40 to-transparent"
           aria-hidden
         />
       </div>
 
-      <div className="py-20 lg:py-24 px-4 lg:px-8 flex flex-col justify-center gap-5">
-        {eyebrow && <p className="text-xs sm:text-sm font-medium tracking-widest uppercase text-amber-900/60">{eyebrow}</p>}
+      {/* ── Content Panel ── */}
+      <div className="flex flex-col justify-center gap-8 py-16 sm:py-20 lg:py-24 px-6 sm:px-10 lg:px-14">
 
-        <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium leading-tight text-amber-950">
+        {/* Eyebrow */}
+        {eyebrow && (
+          <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-amber-600 dark:text-amber-500">
+            {eyebrow}
+          </p>
+        )}
+
+        {/* Headline — supports multi-line with italic accent on second line */}
+        <h2 className="font-display text-4xl sm:text-5xl font-bold text-stone-900 dark:text-zinc-50 leading-tight">
           {headlineLines.map((line, i) => (
-            <span
-              key={i}
-              className={i === 1 ? "text-emerald-900 italic" : ""}
-            >
+            <span key={i} className={i === 1 ? "block italic font-medium text-emerald-800 dark:text-emerald-400 mt-1" : "block"}>
               {line}
-              {i < headlineLines.length - 1 && <br />}
             </span>
           ))}
         </h2>
 
-        <p className="text-base text-amber-900/70 leading-relaxed max-w-xl">
+        {/* Body */}
+        <p className="text-base sm:text-lg text-stone-500 dark:text-zinc-400 leading-relaxed max-w-lg">
           {body}
         </p>
 
+        {/* Stats row */}
         {stats.length > 0 && (
-          <div className="flex gap-6 flex-wrap mt-4">
+          <div className="flex flex-wrap gap-6 pt-4 border-t border-stone-100 dark:border-zinc-800">
             {stats.map((stat, idx) => (
-              <div key={idx} className="flex flex-col gap-0.5 border-l-2 border-amber-500 pl-3">
-                <span className="font-display text-2xl font-medium text-amber-950">
+              <div
+                key={idx}
+                className="flex flex-col gap-1 pl-4 border-l-2 border-amber-400"
+              >
+                <span className="font-display text-3xl sm:text-4xl font-extrabold text-stone-900 dark:text-zinc-50 leading-none tracking-tight">
                   {stat.value}
                 </span>
-                <span className="text-xs tracking-widest uppercase text-amber-900/50">
+                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-400 dark:text-zinc-500">
                   {stat.label}
                 </span>
               </div>
@@ -88,6 +108,8 @@ export function StoryView({
   );
 }
 
+// ── Smart Component ──────────────────────────────────────────────────────────
+
 interface StoryProps {
   block: LandingBlock<StoryContent>;
   titleLabel?: string;
@@ -95,10 +117,7 @@ interface StoryProps {
 }
 
 /**
- * Story Component
- *
- * Displays a story section with image and statistics.
- * All text is fully externalized.
+ * Story Component — Redesigned
  */
 export function Story({
   block,
@@ -106,7 +125,6 @@ export function Story({
   defaultImageAltLabel = "Brand story image",
 }: StoryProps) {
   const content = block.content ?? ({} as StoryContent);
-  const stats = content.stats ?? [];
 
   return (
     <StoryView
@@ -115,7 +133,7 @@ export function Story({
       body={content.body ?? ""}
       imageUrl={block.image?.url ?? null}
       imageCaption={content.imageCaption}
-      stats={stats}
+      stats={content.stats ?? []}
       defaultImageAlt={defaultImageAltLabel}
     />
   );

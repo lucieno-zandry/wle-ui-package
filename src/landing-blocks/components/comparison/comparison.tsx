@@ -1,146 +1,178 @@
-import { Check, X } from "lucide-react";
+import { Check, Minus } from "lucide-react";
 import { ComparisonContent, LandingBlock } from "wle-core";
 
 interface ComparisonViewProps {
-  eyebrow: string;
-  title: string;
-  subtitle: string;
-  ourLabel: string;
-  theirLabel: string;
-  rows: Array<{
-    id: string;
-    criteria: string;
-    ours: string | boolean;
-    theirs: string | boolean;
-  }>;
-  criteriaLabel: string;
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    ourLabel: string;
+    theirLabel: string;
+    rows: Array<{
+        id: string;
+        criteria: string;
+        ours: string | boolean;
+        theirs: string | boolean;
+    }>;
+    criteriaLabel: string;
 }
 
 /**
- * Comparison View (Dumb Component)
+ * Comparison View — Redesigned (Dumb Component)
+ *
+ * Premium dark table with highlighted "ours" column and subtle row hover.
  */
 export function ComparisonView({
-  eyebrow,
-  title,
-  subtitle,
-  ourLabel,
-  theirLabel,
-  rows,
-  criteriaLabel,
+    eyebrow,
+    title,
+    subtitle,
+    ourLabel,
+    theirLabel,
+    rows,
+    criteriaLabel,
 }: ComparisonViewProps) {
-  return (
-    <section className="py-20 bg-amber-950" id="comparison">
-      <div className="max-w-5xl mx-auto px-4">
-        <div className="mb-8">
-          <p className="text-xs sm:text-sm font-medium tracking-widest uppercase text-amber-300 mb-2">{eyebrow}</p>
-          <h2 className="text-3xl sm:text-4xl font-display font-medium text-slate-50 mb-2">{title}</h2>
-          <p className="text-base text-slate-100/55">{subtitle}</p>
-        </div>
-        <div className="rounded-lg border border-white/10 overflow-x-auto">
-          <table className="w-full border-collapse min-w-full">
-            <thead>
-              <tr>
-                <th className="px-5 py-3.5 text-xs font-medium tracking-widest uppercase text-left border-b border-white/10 text-slate-100/45 w-2/5">
-                  {criteriaLabel}
-                </th>
-                <th className="px-5 py-3.5 text-xs font-medium tracking-widest uppercase text-left border-b border-white/10 text-amber-300 bg-amber-500/8">
-                  <span className="flex items-center gap-1">{ourLabel}</span>
-                </th>
-                <th className="px-5 py-3.5 text-xs font-medium tracking-widest uppercase text-left border-b border-white/10 text-slate-100/35">
-                  {theirLabel}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, i) => (
-                <tr
-                  key={row.id}
-                  className={`border-b border-white/5 transition-colors hover:bg-white/2 ${i % 2 === 0 ? "bg-white/2.5" : ""
-                    }`}
-                >
-                  <td className="px-5 py-3.5 text-sm text-slate-100/70">
-                    {row.criteria}
-                  </td>
-                  <td className="px-5 py-3.5 text-sm bg-amber-500/6">
-                    {typeof row.ours === "boolean" ? (
-                      row.ours ? (
-                        <Check
-                          className="w-4.5 h-4.5 text-green-400"
-                          strokeWidth={2.5}
-                        />
-                      ) : (
-                        <X
-                          className="w-4.5 h-4.5 text-white/25"
-                          strokeWidth={2.5}
-                        />
-                      )
-                    ) : (
-                      <span className="text-slate-50">{row.ours}</span>
-                    )}
-                  </td>
-                  <td className="px-5 py-3.5 text-sm text-slate-100/35">
-                    {typeof row.theirs === "boolean" ? (
-                      row.theirs ? (
-                        <Check
-                          className="w-4.5 h-4.5 text-green-400"
-                          strokeWidth={2.5}
-                        />
-                      ) : (
-                        <X
-                          className="w-4.5 h-4.5 text-white/25"
-                          strokeWidth={2.5}
-                        />
-                      )
-                    ) : (
-                      <span>{row.theirs}</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  );
+    return (
+        <section
+            id="comparison"
+            className="py-24 sm:py-32 bg-stone-900 dark:bg-zinc-950 border-t border-white/5"
+        >
+            <div className="max-w-5xl mx-auto px-6">
+
+                {/* Header */}
+                <div className="mb-12 max-w-xl">
+                    <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-amber-400/70 mb-3">
+                        {eyebrow}
+                    </p>
+                    <h2 className="font-display text-4xl sm:text-5xl font-bold text-white leading-tight mb-4">
+                        {title}
+                    </h2>
+                    <p className="text-sm text-white/45 leading-relaxed">{subtitle}</p>
+                </div>
+
+                {/* Table wrapper */}
+                <div className="rounded-2xl border border-white/8 overflow-hidden overflow-x-auto">
+                    <table className="w-full border-collapse min-w-[480px]">
+                        <thead>
+                            <tr className="border-b border-white/8">
+                                {/* Criteria column header */}
+                                <th className="w-[44%] px-6 py-4 text-left">
+                                    <span className="text-[10px] font-bold tracking-[0.22em] uppercase text-white/30">
+                                        {criteriaLabel}
+                                    </span>
+                                </th>
+
+                                {/* Our column — highlighted */}
+                                <th className="w-[28%] px-6 py-4 text-left bg-amber-400/6 border-x border-amber-400/12">
+                                    <span className="text-[10px] font-bold tracking-[0.22em] uppercase text-amber-400">
+                                        {ourLabel}
+                                    </span>
+                                </th>
+
+                                {/* Their column */}
+                                <th className="w-[28%] px-6 py-4 text-left">
+                                    <span className="text-[10px] font-bold tracking-[0.22em] uppercase text-white/25">
+                                        {theirLabel}
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {rows.map((row, i) => (
+                                <tr
+                                    key={row.id}
+                                    className="border-b border-white/5 last:border-0 transition-colors duration-200 hover:bg-white/2"
+                                >
+                                    {/* Criteria */}
+                                    <td className="px-6 py-4">
+                                        <span className="text-sm font-medium text-white/65">
+                                            {row.criteria}
+                                        </span>
+                                    </td>
+
+                                    {/* Ours */}
+                                    <td className="px-6 py-4 bg-amber-400/4 border-x border-amber-400/8">
+                                        <CellValue value={row.ours} isOurs />
+                                    </td>
+
+                                    {/* Theirs */}
+                                    <td className="px-6 py-4">
+                                        <CellValue value={row.theirs} isOurs={false} />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    );
 }
 
+// ── Cell renderer ────────────────────────────────────────────────────────────
+
+function CellValue({
+    value,
+    isOurs,
+}: {
+    value: string | boolean;
+    isOurs: boolean;
+}) {
+    if (typeof value === "boolean") {
+        return value ? (
+            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500/15">
+                <Check
+                    className={`w-3.5 h-3.5 ${isOurs ? "text-emerald-400" : "text-emerald-500/60"}`}
+                    strokeWidth={2.5}
+                />
+            </span>
+        ) : (
+            <Minus className="w-3.5 h-3.5 text-white/18" strokeWidth={2} />
+        );
+    }
+    return (
+        <span
+            className={`text-sm font-medium ${isOurs ? "text-white/90" : "text-white/30"}`}
+        >
+            {value}
+        </span>
+    );
+}
+
+// ── Smart Component ──────────────────────────────────────────────────────────
+
 interface ComparisonProps {
-  block: LandingBlock<ComparisonContent>;
-  eyebrowLabel?: string;
-  titleLabel?: string;
-  subtitleLabel?: string;
-  ourLabelText?: string;
-  theirLabelText?: string;
-  criteriaLabelText?: string;
+    block: LandingBlock<ComparisonContent>;
+    eyebrowLabel?: string;
+    titleLabel?: string;
+    subtitleLabel?: string;
+    ourLabelText?: string;
+    theirLabelText?: string;
+    criteriaLabelText?: string;
 }
 
 /**
- * Comparison Component
- *
- * Displays a comparison table with customizable labels.
- * All text is fully externalized.
+ * Comparison Component — Redesigned
  */
 export function Comparison({
-  block,
-  eyebrowLabel = "Why It Matters",
-  titleLabel = "Compare",
-  subtitleLabel = "See the difference",
-  ourLabelText = "Our Solution",
-  theirLabelText = "Competitor",
-  criteriaLabelText = "Criteria",
+    block,
+    eyebrowLabel = "Why It Matters",
+    titleLabel = "Compare",
+    subtitleLabel = "See the difference",
+    ourLabelText = "Our Solution",
+    theirLabelText = "Competitor",
+    criteriaLabelText = "Criteria",
 }: ComparisonProps) {
-  const content = block.content ?? ({} as ComparisonContent);
+    const content = block.content ?? ({} as ComparisonContent);
 
-  return (
-    <ComparisonView
-      eyebrow={content.eyebrow ?? eyebrowLabel}
-      title={block.title ?? titleLabel}
-      subtitle={block.subtitle ?? subtitleLabel}
-      ourLabel={content.ourLabel ?? ourLabelText}
-      theirLabel={content.theirLabel ?? theirLabelText}
-      rows={content.rows ?? []}
-      criteriaLabel={criteriaLabelText}
-    />
-  );
+    return (
+        <ComparisonView
+            eyebrow={content.eyebrow ?? eyebrowLabel}
+            title={block.title ?? titleLabel}
+            subtitle={block.subtitle ?? subtitleLabel}
+            ourLabel={content.ourLabel ?? ourLabelText}
+            theirLabel={content.theirLabel ?? theirLabelText}
+            rows={content.rows ?? []}
+            criteriaLabel={criteriaLabelText}
+        />
+    );
 }

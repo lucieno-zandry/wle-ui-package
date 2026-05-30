@@ -2,69 +2,70 @@ import { LandingBlock } from "wle-core";
 import { LucideIcon } from "./lucide-icon";
 
 interface TrustPillar {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
+    id: string;
+    title: string;
+    description: string;
+    icon: string;
 }
 
 interface TrustBarViewProps {
-  pillars: TrustPillar[];
-  renderIcon?: (iconName: string) => React.ReactNode;
+    pillars: TrustPillar[];
+    renderIcon?: (iconName: string) => React.ReactNode;
 }
 
 /**
- * Trust Bar View (Dumb Component)
+ * Trust Bar View — Redesigned
+ * Elegant dark strip with icon+text trust pillars. Theme-agnostic.
  */
-export function TrustBarView({
-  pillars,
-  renderIcon,
-}: TrustBarViewProps) {
-  if (!pillars.length) return null;
+export function TrustBarView({ pillars, renderIcon }: TrustBarViewProps) {
+    if (!pillars.length) return null;
 
-  return (
-    <section className="bg-emerald-900 py-4 sm:py-6 border-b border-white/6" id="trust-bar">
-      <div className="max-w-5xl mx-auto px-4 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-3">
-        {pillars.map((pillar, i) => (
-          <div
-            key={pillar.id}
-            className="flex items-start gap-3 animate-fade-up"
-            style={{ animationDelay: `${i * 80}ms` }}>
-            <span className="w-9 h-9 rounded-md bg-white/8 flex items-center justify-center flex-shrink-0">
-              {renderIcon
-                ? renderIcon(pillar.icon)
-                : <span className="text-base">📌</span>}
-            </span>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-white">
-                {pillar.title}
-              </p>
-              <p className="text-xs text-white/55 leading-relaxed">
-                {pillar.description}
-              </p>
+    return (
+        <section
+            id="trust-bar"
+            className="bg-emerald-950 dark:bg-zinc-950 border-b border-white/5"
+        >
+            <div className="max-w-5xl mx-auto px-6">
+                <ul className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/6">
+                    {pillars.map((pillar, i) => (
+                        <li
+                            key={pillar.id}
+                            className="flex items-start gap-3 py-4 sm:py-5 px-4 sm:px-6 first:pl-0 last:pr-0"
+                            style={{ animationDelay: `${i * 80}ms` }}
+                        >
+                            {/* Icon badge */}
+                            <span className="mt-0.5 w-8 h-8 rounded-lg bg-white/8 flex items-center justify-center flex-shrink-0 text-amber-400">
+                                {renderIcon ? renderIcon(pillar.icon) : <span className="text-sm">📌</span>}
+                            </span>
+
+                            <div className="min-w-0">
+                                <p className="text-xs sm:text-sm font-semibold text-white/90 leading-snug">
+                                    {pillar.title}
+                                </p>
+                                <p className="text-[11px] text-white/40 leading-relaxed mt-0.5 line-clamp-2">
+                                    {pillar.description}
+                                </p>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
             </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
+        </section>
+    );
 }
 
 interface TrustBarProps {
-  block: LandingBlock;
-  renderIcon?: (iconName: string) => React.ReactNode;
+    block: LandingBlock;
+    renderIcon?: (iconName: string) => React.ReactNode;
 }
 
 /**
- * Trust Bar Component
- *
- * Displays trust pillars with optional custom icon rendering.
- * All content is fully externalized.
+ * Trust Bar Component — Redesigned
  */
-export function TrustBar({ block, renderIcon = (name) => <LucideIcon name={name} /> }: TrustBarProps) {
-  const pillars: TrustPillar[] = block.content?.pillars ?? [];
-
-  return <TrustBarView
-    pillars={pillars}
-    renderIcon={renderIcon} />;
+export function TrustBar({
+    block,
+    renderIcon = (name) => <LucideIcon name={name} />,
+}: TrustBarProps) {
+    const pillars: TrustPillar[] = block.content?.pillars ?? [];
+    return <TrustBarView pillars={pillars} renderIcon={renderIcon} />;
 }

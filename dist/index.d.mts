@@ -11,17 +11,10 @@ interface CollectionsProps {
     renderItem?: (item: any, index: number) => React.ReactNode;
 }
 /**
- * Collections Block Component
+ * Collections Block — Redesigned
  *
- * Displays a grid of collection items from a LandingBlock.
- * All text labels are props-based, making it fully reusable without translation dependencies.
- *
- * @param block - The landing block containing collection items
- * @param fallbackEyebrow - Top label (default: "Explore our range")
- * @param fromLabel - Price label prefix (default: "From")
- * @param shopLabel - Call-to-action label (default: "Shop")
- * @param subtitleFallback - Default subtitle for items without one (default: "Featured Collection")
- * @param renderItem - Custom item renderer (optional)
+ * Editorial grid layout with refined header and animated cards.
+ * Theme-agnostic, fully responsive.
  */
 declare function Collections({ block, fallbackEyebrow, fromLabel, shopLabel, subtitleFallback, renderItem, }: CollectionsProps): react_jsx_runtime.JSX.Element;
 
@@ -37,7 +30,7 @@ type CollectionItemViewProps = {
     shopLabel: string;
     linkTo: string;
 };
-declare function CollectionItemView({ slug, title, subtitle, imageUrl, startingPrice, index, fromLabel, shopLabel, linkTo, }: CollectionItemViewProps): react_jsx_runtime.JSX.Element;
+declare function CollectionItemView({ title, subtitle, imageUrl, startingPrice, index, fromLabel, shopLabel, linkTo, }: CollectionItemViewProps): react_jsx_runtime.JSX.Element;
 type CollectionItemProps = {
     item: CollectionContentItem;
     index: number;
@@ -99,10 +92,12 @@ interface FeaturedProductsViewProps {
     renderProduct?: (product: Product, index: number) => React.ReactNode;
 }
 /**
- * Featured Products View (Dumb Component)
- * Pure presentation, all customization via props
+ * Featured Products View — Redesigned (Dumb Component)
+ *
+ * Editorial section header with children slot for product grid.
+ * Theme-agnostic, fully responsive.
  */
-declare function FeaturedProductsView({ eyebrow, title, subtitle, viewAllLink, viewAllProductsLabel, children }: PropsWithChildren<FeaturedProductsViewProps>): react_jsx_runtime.JSX.Element;
+declare function FeaturedProductsView({ eyebrow, title, subtitle, viewAllLink, viewAllProductsLabel, children, }: PropsWithChildren<FeaturedProductsViewProps>): react_jsx_runtime.JSX.Element;
 interface FeaturedProductsProps {
     block: LandingBlock<FeaturedProductsContent>;
     viewAllLink?: string;
@@ -111,19 +106,9 @@ interface FeaturedProductsProps {
     subtitleLabel?: string;
 }
 /**
- * Featured Products Component
- *
- * Displays featured products from a landing block.
- * All text and routing are fully externalized.
- *
- * @param block - The landing block
- * @param viewAllLink - Link for "View All Products" button (default: "/products")
- * @param viewAllProductsLabel - Label for view all button (default: "View All Products")
- * @param titleLabel - Fallback title if block.title is empty (default: "Featured Products")
- * @param subtitleLabel - Fallback subtitle if block.subtitle is empty
- * @param renderProduct - Custom renderer for product items (optional)
+ * Featured Products Component — Redesigned
  */
-declare function FeaturedProducts({ block, viewAllLink, viewAllProductsLabel, titleLabel, subtitleLabel, children }: PropsWithChildren<FeaturedProductsProps>): react_jsx_runtime.JSX.Element;
+declare function FeaturedProducts({ block, viewAllLink, viewAllProductsLabel, titleLabel, subtitleLabel, children, }: PropsWithChildren<FeaturedProductsProps>): react_jsx_runtime.JSX.Element;
 
 interface CtaBannerViewProps {
     eyebrow?: string;
@@ -137,7 +122,10 @@ interface CtaBannerViewProps {
     renderActions?: () => React.ReactNode;
 }
 /**
- * CTA Banner View (Dumb Component)
+ * CTA Banner View — Redesigned (Dumb Component)
+ *
+ * Cinematic full-bleed section with multi-layer overlay guaranteeing
+ * text legibility over any image. Theme-agnostic.
  */
 declare function CtaBannerView({ eyebrow, headline, subline, backgroundImageUrl, primaryButtonLabel, secondaryButtonLabel, onPrimaryAction, onSecondaryAction, renderActions, }: CtaBannerViewProps): react_jsx_runtime.JSX.Element;
 interface CtaBannerProps {
@@ -151,19 +139,7 @@ interface CtaBannerProps {
     renderActions?: () => React.ReactNode;
 }
 /**
- * CTA Banner Component
- *
- * Displays a call-to-action banner with background image and customizable actions.
- * All text and callbacks are fully externalized.
- *
- * @param block - The landing block
- * @param fallbackHeadline - Fallback headline (default: "")
- * @param fallbackSubline - Fallback subline (default: "")
- * @param primaryButtonLabel - Primary button text
- * @param secondaryButtonLabel - Secondary button text
- * @param onPrimaryAction - Callback for primary button
- * @param onSecondaryAction - Callback for secondary button
- * @param renderActions - Custom actions renderer (optional)
+ * CTA Banner Component — Redesigned
  */
 declare function CtaBanner({ block, fallbackHeadline, fallbackSubline, primaryButtonLabel, secondaryButtonLabel, onPrimaryAction, onSecondaryAction, renderActions, }: CtaBannerProps): react_jsx_runtime.JSX.Element;
 
@@ -180,7 +156,11 @@ interface StoryViewProps {
     defaultImageAlt: string;
 }
 /**
- * Story View (Dumb Component)
+ * Story View — Redesigned (Dumb Component)
+ *
+ * Architectural split-screen layout. Image panel left, content right.
+ * Decorative amber divider between panels on desktop.
+ * Theme-agnostic, fully responsive.
  */
 declare function StoryView({ eyebrow, title, body, imageUrl, imageCaption, stats, defaultImageAlt, }: StoryViewProps): react_jsx_runtime.JSX.Element;
 interface StoryProps {
@@ -189,10 +169,7 @@ interface StoryProps {
     defaultImageAltLabel?: string;
 }
 /**
- * Story Component
- *
- * Displays a story section with image and statistics.
- * All text is fully externalized.
+ * Story Component — Redesigned
  */
 declare function Story({ block, titleLabel, defaultImageAltLabel, }: StoryProps): react_jsx_runtime.JSX.Element;
 
@@ -205,7 +182,10 @@ interface TestimonialsViewProps {
     ratingLabel: (rating: number) => string;
 }
 /**
- * Testimonials View (Dumb Component)
+ * Testimonials View — Redesigned (Dumb Component)
+ *
+ * Refined review cards with oversized quote glyphs, verified badges,
+ * and payment strip. Theme-agnostic.
  */
 declare function TestimonialsView({ eyebrow, title, testimonials, verifiedPurchaseLabel, securePaymentViaLabel, ratingLabel, }: TestimonialsViewProps): react_jsx_runtime.JSX.Element;
 interface TestimonialsProps {
@@ -216,10 +196,7 @@ interface TestimonialsProps {
     ratingLabel?: (rating: number) => string;
 }
 /**
- * Testimonials Component
- *
- * Displays customer testimonials with ratings.
- * All text is fully externalized.
+ * Testimonials Component — Redesigned
  */
 declare function Testimonials({ block, titleLabel, verifiedPurchaseLabel, securePaymentViaLabel, ratingLabel, }: TestimonialsProps): react_jsx_runtime.JSX.Element;
 
@@ -235,9 +212,11 @@ interface FaqViewProps {
     onToggle: (id: string) => void;
 }
 /**
- * FAQ View (Dumb Component)
+ * FAQ View — Redesigned (Dumb Component)
+ *
+ * Minimal numbered accordion. Theme-agnostic.
  */
-declare function FaqView({ eyebrow, title, items, openId, onToggle, }: FaqViewProps): react_jsx_runtime.JSX.Element;
+declare function FaqView({ eyebrow, title, items, openId, onToggle }: FaqViewProps): react_jsx_runtime.JSX.Element;
 interface FaqProps {
     block: LandingBlock<FaqContent>;
     titleLabel?: string;
@@ -245,15 +224,7 @@ interface FaqProps {
     onToggle?: (id: string) => void;
 }
 /**
- * FAQ Component
- *
- * Displays FAQ items with expandable answers.
- * All text and state management are fully externalized.
- *
- * @param block - The landing block
- * @param titleLabel - Fallback title (default: "Frequently Asked Questions")
- * @param openId - ID of currently open item
- * @param onToggle - Callback when item is toggled
+ * FAQ Component — Redesigned
  */
 declare function Faq({ block, titleLabel, openId, onToggle, }: FaqProps): react_jsx_runtime.JSX.Element;
 
@@ -272,7 +243,9 @@ interface ComparisonViewProps {
     criteriaLabel: string;
 }
 /**
- * Comparison View (Dumb Component)
+ * Comparison View — Redesigned (Dumb Component)
+ *
+ * Premium dark table with highlighted "ours" column and subtle row hover.
  */
 declare function ComparisonView({ eyebrow, title, subtitle, ourLabel, theirLabel, rows, criteriaLabel, }: ComparisonViewProps): react_jsx_runtime.JSX.Element;
 interface ComparisonProps {
@@ -285,10 +258,7 @@ interface ComparisonProps {
     criteriaLabelText?: string;
 }
 /**
- * Comparison Component
- *
- * Displays a comparison table with customizable labels.
- * All text is fully externalized.
+ * Comparison Component — Redesigned
  */
 declare function Comparison({ block, eyebrowLabel, titleLabel, subtitleLabel, ourLabelText, theirLabelText, criteriaLabelText, }: ComparisonProps): react_jsx_runtime.JSX.Element;
 
@@ -303,20 +273,18 @@ interface TrustBarViewProps {
     renderIcon?: (iconName: string) => React.ReactNode;
 }
 /**
- * Trust Bar View (Dumb Component)
+ * Trust Bar View — Redesigned
+ * Elegant dark strip with icon+text trust pillars. Theme-agnostic.
  */
-declare function TrustBarView({ pillars, renderIcon, }: TrustBarViewProps): react_jsx_runtime.JSX.Element | null;
+declare function TrustBarView({ pillars, renderIcon }: TrustBarViewProps): react_jsx_runtime.JSX.Element | null;
 interface TrustBarProps {
     block: LandingBlock;
     renderIcon?: (iconName: string) => React.ReactNode;
 }
 /**
- * Trust Bar Component
- *
- * Displays trust pillars with optional custom icon rendering.
- * All content is fully externalized.
+ * Trust Bar Component — Redesigned
  */
-declare function TrustBar({ block, renderIcon }: TrustBarProps): react_jsx_runtime.JSX.Element;
+declare function TrustBar({ block, renderIcon, }: TrustBarProps): react_jsx_runtime.JSX.Element;
 
 interface StickyCTABarViewProps {
     isVisible: boolean;
@@ -330,7 +298,9 @@ interface StickyCTABarViewProps {
     dismissAriaLabel: string;
 }
 /**
- * Sticky CTA Bar View (Dumb Component)
+ * Sticky CTA Bar View — Redesigned (Dumb Component)
+ *
+ * Frosted glass bar. Theme-agnostic via light/dark Tailwind variants.
  */
 declare function StickyCTABarView({ isVisible, productName, price, thumbnailUrl, onAddToCart, onDismiss, quickAddAriaLabel, addToCartLabel, dismissAriaLabel, }: StickyCTABarViewProps): react_jsx_runtime.JSX.Element;
 interface StickyCTABarProps {
@@ -345,20 +315,7 @@ interface StickyCTABarProps {
     dismissAriaLabel?: string;
 }
 /**
- * Sticky CTA Bar Component
- *
- * A sticky bar that appears with product and quick add-to-cart button.
- * All text, visibility, and callbacks are fully externalized.
- *
- * @param isVisible - Whether the bar is visible (default: false)
- * @param product - Product to display
- * @param selectedVariantId - Currently selected variant ID
- * @param formatPrice - Function to format prices (default: toString)
- * @param onAddToCart - Callback when add to cart is clicked
- * @param onDismiss - Callback when dismiss is clicked
- * @param quickAddAriaLabel - Aria label (default: "Quick add to cart")
- * @param addToCartLabel - Button label (default: "Add to Cart")
- * @param dismissAriaLabel - Dismiss button aria label (default: "Dismiss")
+ * Sticky CTA Bar Component — Redesigned
  */
 declare function StickyCTABar({ isVisible, product, selectedVariantId, formatPrice, onAddToCart, onDismiss, quickAddAriaLabel, addToCartLabel, dismissAriaLabel, }: StickyCTABarProps): react_jsx_runtime.JSX.Element | null;
 
