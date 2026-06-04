@@ -1,13 +1,13 @@
 import { LucideIcon } from "./lucide-icon";
 
-interface TrustPillar {
+export interface TrustPillar {
   id: string;
   title: string;
   description: string;
   icon: string;
 }
 
-interface TrustBarViewProps {
+export interface TrustBarViewProps {
   pillars: TrustPillar[];
 }
 

@@ -4,7 +4,7 @@ import { JSX } from "react/jsx-runtime";
 import { Category, LandingAble, Product } from "wle-core";
 import { Button } from "~/components/ui/button";
 
-type ActionsViewProps = {
+export type ActionsViewProps = {
     appPathname: (pathname: string) => string
     related?: LandingAble
     isProduct: (able: LandingAble) => able is Product
