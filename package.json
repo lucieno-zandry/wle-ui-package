@@ -37,7 +37,8 @@
   },
   "peerDependencies": {
     "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react-dom": "^19.2.6",
+    "lucide-react": "^1.16.0"
   },
   "dependencies": {
     "react-router": "^7.15.1",
@@ -45,7 +46,6 @@
     "@radix-ui/react-slot": "^1.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "^1.16.0",
     "radix-ui": "^1.4.3",
     "tailwind-merge": "^3.6.0",
     "wle-core": "github:lucieno-zandry/wle-core-package"
