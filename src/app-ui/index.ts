@@ -5,3 +5,4 @@ export * from "./field";
 export * from "./form-field";
 export * from "./load-more-button";
 export * from "./step-wrapper";
+export * from "./select";
