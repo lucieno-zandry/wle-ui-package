@@ -247,6 +247,13 @@ declare function StepWrapper({ number, title, children, isActive, isCompleted, o
     onEdit?: () => void;
 }): react.JSX.Element;
 
+type SelectProps = {
+    label?: string;
+    validationErrors?: string[] | null;
+    children: react__default.ReactNode;
+} & react__default.SelectHTMLAttributes<HTMLSelectElement>;
+declare function Select({ label, validationErrors, children, ...props }: SelectProps): react__default.JSX.Element;
+
 type index_AppFieldInputProps = AppFieldInputProps;
 declare const index_BackButton: typeof BackButton;
 declare const index_Button: typeof Button;
@@ -255,9 +262,10 @@ declare const index_CountrySelector: typeof CountrySelector;
 declare const index_Field: typeof Field;
 declare const index_FormField: typeof FormField;
 declare const index_LoadMoreButton: typeof LoadMoreButton;
+declare const index_Select: typeof Select;
 declare const index_StepWrapper: typeof StepWrapper;
 declare namespace index {
-  export { type index_AppFieldInputProps as AppFieldInputProps, index_BackButton as BackButton, index_Button as Button, type index_ButtonProps as ButtonProps, index_CountrySelector as CountrySelector, index_Field as Field, index_FormField as FormField, index_LoadMoreButton as LoadMoreButton, index_StepWrapper as StepWrapper };
+  export { type index_AppFieldInputProps as AppFieldInputProps, index_BackButton as BackButton, index_Button as Button, type index_ButtonProps as ButtonProps, index_CountrySelector as CountrySelector, index_Field as Field, index_FormField as FormField, index_LoadMoreButton as LoadMoreButton, index_Select as Select, index_StepWrapper as StepWrapper };
 }
 
-export { ActionsView, type ActionsViewProps, type AppFieldInputProps, index as AppUI, BackButton, Button, type ButtonProps, CollectionItemView, ComparisonView, CountrySelector, CtaBannerView, FaqView, FeaturedProductsView, Field, FormField, HeroView, index$1 as LandingBlocks, LoadMoreButton, LucideIcon, StepWrapper, StickyCTABarView, StoryView, TestimonialsView, TrustBarView, type TrustBarViewProps, type TrustPillar };
+export { ActionsView, type ActionsViewProps, type AppFieldInputProps, index as AppUI, BackButton, Button, type ButtonProps, CollectionItemView, ComparisonView, CountrySelector, CtaBannerView, FaqView, FeaturedProductsView, Field, FormField, HeroView, index$1 as LandingBlocks, LoadMoreButton, LucideIcon, Select, StepWrapper, StickyCTABarView, StoryView, TestimonialsView, TrustBarView, type TrustBarViewProps, type TrustPillar };
