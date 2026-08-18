@@ -7,7 +7,7 @@ type SelectProps = {
     children: React.ReactNode;
 } & React.SelectHTMLAttributes<HTMLSelectElement>;
 
-export default function Select({ label, validationErrors, children, ...props }: SelectProps) {
+export function Select({ label, validationErrors, children, ...props }: SelectProps) {
     const hasError = !!validationErrors && validationErrors.length > 0;
 
     return (
